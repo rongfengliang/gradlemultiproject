@@ -5,7 +5,11 @@ apply plugin: 'java'
 apply plugin: 'application'
 sourceCompatibility = 1.8
 mainClassName = 'com.dalong.Application'
-
+jar {
+    manifest {
+        attributes "com.dalong.Application"
+    }
+}
 repositories {
     mavenCentral()
     maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
