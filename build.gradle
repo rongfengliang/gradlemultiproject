@@ -1,15 +1,18 @@
 group 'com.gradleapp'
 version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-apply plugin: 'application'
-sourceCompatibility = 1.8
-mainClassName = 'com.dalong.Application'
-jar {
-    manifest {
-        attributes "com.dalong.Application"
+buildscript {
+    repositories {
+        maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
+    }
+    dependencies {
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: "docker"
+sourceCompatibility = 1.8
+mainClassName = 'com.dalong.Application'
 repositories {
     mavenCentral()
     maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
@@ -22,4 +25,15 @@ dependencies {
     compile files("lib/commons-codec.jar")
 
 }
-
+task buildDocker(type:Docker,dependsOn:build){
+    push = false
+    applicationName ="gradlemultiproject"
+    project.group="dockerimagehost/mydemo"
+    dockerfile = file("${projectDir}/src/main/docker/Dockerfile")
+    doFirst {
+        copy {
+            from distZip
+            into stageDir
+        }
+    }
+}
