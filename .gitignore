@@ -2,3 +2,9 @@
 .idea
 build
 out
+.classpath
+.project
+parent.iml
+parent.ipr
+parent.iws
+.settings
